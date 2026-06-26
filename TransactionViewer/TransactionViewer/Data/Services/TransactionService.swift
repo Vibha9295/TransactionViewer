@@ -7,12 +7,36 @@
 
 import Foundation
 
+// MARK: - TransactionServiceProtocol
+
 protocol TransactionServiceProtocol: Sendable {
     func fetchTransactions() async throws -> [Transaction]
 }
 
-final class TransactionService: TransactionServiceProtocol, @unchecked Sendable {
+// MARK: - TransactionService
+
+final class TransactionService: TransactionServiceProtocol, Sendable {
+
+    // 0.5s pause to mimic a real network round-trip in the simulator, remove before prod
+    private let simulatedDelay: UInt64 = 500_000_000
+
     func fetchTransactions() async throws -> [Transaction] {
-        return []
+        try await Task.sleep(nanoseconds: simulatedDelay)
+
+        guard let url = Bundle.main.url(forResource: "transaction-list", withExtension: "json") else {
+            throw TransactionServiceError.fileNotFound
+        }
+
+        do {
+            let data = try Data(contentsOf: url)
+            return try JSONDecoder().decode(TransactionList.self, from: data).transactions
+        } catch let error as TransactionServiceError {
+            throw error
+        } catch {
+            // wrap so callers don't need to handle raw DecodingError
+            throw TransactionServiceError.decodingFailed(error)
+        }
     }
 }
+
+
