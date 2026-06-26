@@ -61,15 +61,17 @@ struct TransactionRowView: View {
     }
 
     private var iconBackground: Color {
-        isCredit ? Color.transactionGreen.opacity(0.12) : Color.transactionRed.opacity(0.12)
+        // Soft muted green tint for credits, soft neutral grey tint for debits
+        isCredit ? Color.transactionGreen.opacity(0.12) : Color(.systemGray6)
     }
 
     private var iconForeground: Color {
-        isCredit ? .transactionGreen : .transactionRed
+        isCredit ? .transactionGreen : .secondary
     }
 
     private var amountColor: Color {
-        isCredit ? .transactionGreen : .primary // debits don't need colour treatment
+        // Green stands out for income; standard primary color handles standard expenses
+        isCredit ? .transactionGreen : .primary
     }
 
     private var amountDisplay: String {

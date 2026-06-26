@@ -71,7 +71,12 @@ extension Transaction {
 enum TransactionType: String, Decodable, Hashable, Sendable {
     case credit = "CREDIT"
     case debit  = "DEBIT"
+    
+    var isCredit: Bool { self == .credit }
 
+    var displayTitle: String {
+        isCredit ? "detail.credit".localized : "detail.debit".localized
+    }
     // default RawRepresentable init silently returns nil on unknown values, which swallows bugs. throwing here makes bad payloads visible early.
     init(from decoder: any Decoder) throws {
         let container = try decoder.singleValueContainer()

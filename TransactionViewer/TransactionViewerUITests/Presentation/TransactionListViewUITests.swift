@@ -45,4 +45,13 @@ final class TransactionListViewUITests: XCTestCase {
         list.swipeUp()
         XCTAssertTrue(list.exists)
     }
+    
+    func testDetailScreenShowsTransactionDetails() throws {
+        let list = app.collectionViews["transactions_list"]
+        XCTAssertTrue(list.waitForExistence(timeout: 3))
+        list.cells.element(boundBy: 0).tap()
+
+        XCTAssertTrue(app.navigationBars["Transaction Details"].waitForExistence(timeout: 3))
+    }
+
 }
