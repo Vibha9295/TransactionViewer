@@ -20,7 +20,8 @@ struct TransactionDetailView: View {
         VStack {
             Text("Detail Screen")
         }
-        .navigationTitle("Details")
+        .navigationTitle("transaction.detail.title".localized)
+        .accessibilityIdentifier("transaction_detail_screen")
         .navigationBarTitleDisplayMode(.inline)
     }
 }

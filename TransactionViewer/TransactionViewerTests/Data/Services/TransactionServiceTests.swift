@@ -41,4 +41,11 @@ struct TransactionServiceTests {
         let error = TransactionServiceError.fileNotFound
         #expect(error.errorDescription?.contains("transaction-list.json") == true)
     }
+    
+    @Test("decodingFailed error description includes the underlying error")
+    func decodingFailedErrorDescription() {
+        let underlying = NSError(domain: "test", code: 0, userInfo: [NSLocalizedDescriptionKey: "bad data"])
+        let error = TransactionServiceError.decodingFailed(underlying)
+        #expect(error.errorDescription?.contains("bad data") == true)
+    }
 }

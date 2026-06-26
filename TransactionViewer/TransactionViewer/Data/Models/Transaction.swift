@@ -92,7 +92,7 @@ struct Amount: Decodable, Hashable, Sendable {
     let value: Double
     let currency: String
 
-    var formatted: String {
+    nonisolated var formatted: String {
         value.formatted(.currency(code: currency))
     }
 }
