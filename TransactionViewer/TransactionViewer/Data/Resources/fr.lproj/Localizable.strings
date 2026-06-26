@@ -1,0 +1,9 @@
+// MARK: - Transaction List
+"transactions.title" = "Transactions";
+"transactions.loading" = "Chargement des transactions…";
+"transactions.empty.title" = "Aucune transaction";
+"transactions.empty.description" = "Tirez pour actualiser ou revenez plus tard.";
+"transactions.error.title" = "Une erreur s'est produite";
+"transactions.error.retry" = "Réessayer";
+// MARK: - Transaction Detail
+"transaction.detail.title" = "Détails de la transaction";
