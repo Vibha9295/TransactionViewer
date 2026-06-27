@@ -33,7 +33,6 @@ final class TransactionService: TransactionServiceProtocol, Sendable {
         } catch let error as TransactionServiceError {
             throw error
         } catch {
-            // wrap so callers don't need to handle raw DecodingError
             throw TransactionServiceError.decodingFailed(error)
         }
     }

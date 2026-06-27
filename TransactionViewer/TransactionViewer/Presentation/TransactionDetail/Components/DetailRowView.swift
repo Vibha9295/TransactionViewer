@@ -7,13 +7,12 @@
 
 import SwiftUI
 
-// label + value row for the detail card — suffix handles the card number hint
 struct DetailRowView: View {
-
+    
     let label: String
     let value: String
     var suffix: String?
-    var valueFont: Font = .body   // amount row needs a larger font than the rest
+    var valueFont: Font = .body
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {

@@ -11,9 +11,9 @@ import Foundation
 
 @Suite("Transaction List ViewModel Tests")
 struct TransactionListViewModelTests {
-
+    
     @MainActor
-    @Test("Starts idle, nothing should trigger a load on init")
+    @Test("Initial state is idle before any load is triggered")
     func initialStateIsIdle() {
         let vm = TransactionListViewModel(service: MockTransactionService())
         guard case .idle = vm.state else {
@@ -23,8 +23,8 @@ struct TransactionListViewModelTests {
     }
 
     @MainActor
-    @Test("Successful fetch lands in .loaded with the right transactions")
-    func successfulLoad() async throws {
+    @Test("Successful fetch transitions to .loaded with the returned transactions")
+    func successfulLoad() async {
         let mock = MockTransactionService(result: .success([.makeMock(merchantName: "Coffee Shop")]))
         let vm = TransactionListViewModel(service: mock)
 
@@ -39,11 +39,10 @@ struct TransactionListViewModelTests {
     }
 
     @MainActor
-    @Test("Service error surfaces as .failed with the error message")
+    @Test("Service error surfaces as .failed with a non-empty message")
     func failedLoad() async {
         let error = NSError(domain: "Network", code: -1009, userInfo: [NSLocalizedDescriptionKey: "No internet"])
-        let mock = MockTransactionService(result: .failure(error))
-        let vm = TransactionListViewModel(service: mock)
+        let vm = TransactionListViewModel(service: MockTransactionService(result: .failure(error)))
 
         await vm.loadTransactions()
 
@@ -55,7 +54,7 @@ struct TransactionListViewModelTests {
     }
 
     @MainActor
-    @Test("Pull-to-refresh doesn't drop back to .loading while data is visible")
+    @Test("Pull-to-refresh does not drop back to .loading when data is already visible")
     func pullToRefreshKeepsLoadedState() async {
         let mock = MockTransactionService(result: .success([.makeMock(merchantName: "Groceries")]))
         let vm = TransactionListViewModel(service: mock)
@@ -66,8 +65,8 @@ struct TransactionListViewModelTests {
             return
         }
 
-        // second load should stay in .loaded throughout — the ViewModel
-        // explicitly skips .loading when data already exists
+        // A second load should not overwrite .loaded with .loading, which would
+        // flash a spinner over the already-visible rows.
         await vm.loadTransactions()
 
         guard case .loaded = vm.state else {
@@ -75,9 +74,9 @@ struct TransactionListViewModelTests {
             return
         }
     }
-    
+
     @MainActor
-    @Test("Retry after failure transitions to .loaded on success")
+    @Test("Retry after failure recovers to .loaded when the next request succeeds")
     func retryAfterFailureRecovers() async {
         let error = NSError(domain: "Network", code: -1009, userInfo: [NSLocalizedDescriptionKey: "No internet"])
         let mock = MockTransactionService(result: .failure(error))
@@ -89,7 +88,6 @@ struct TransactionListViewModelTests {
             return
         }
 
-        // simulate retry with a working service
         mock.mockResult = .success([.makeMock(merchantName: "Retry Shop")])
         await vm.loadTransactions()
 
@@ -101,10 +99,9 @@ struct TransactionListViewModelTests {
     }
 
     @MainActor
-    @Test("Empty response lands in .loaded with an empty array, not .failed")
+    @Test("Empty response lands in .loaded with an empty array rather than .failed")
     func emptyResponseIsNotAnError() async {
-        let mock = MockTransactionService(result: .success([]))
-        let vm = TransactionListViewModel(service: mock)
+        let vm = TransactionListViewModel(service: MockTransactionService(result: .success([])))
 
         await vm.loadTransactions()
 
@@ -116,9 +113,9 @@ struct TransactionListViewModelTests {
     }
 }
 
-// MARK: - Mock
+// MARK: - Test-only Mock Service
 
-// @unchecked because mockResult is mutable — fine here, tests don't run concurrently
+// @unchecked is safe here: mockResult is only mutated from test setup code, never from concurrent contexts.
 private final class MockTransactionService: TransactionServiceProtocol, @unchecked Sendable {
     var mockResult: Result<[Transaction], Error>
 

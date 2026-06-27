@@ -12,56 +12,62 @@ struct TransactionRowView: View {
 
     var body: some View {
         HStack(spacing: 16) {
-            ZStack {
-                Circle()
-                    .fill(iconBackground)
-                    .frame(width: 44, height: 44)
-
-                Image(systemName: iconName)
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(iconForeground)
-            }
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(transaction.displayMerchantName)
-                    .font(.body)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.primary)
-
-                if let desc = transaction.description, !desc.isEmpty {
-                    Text(desc)
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                }
-            }
-
+            transactionIcon
+            transactionLabels
             Spacer(minLength: 8)
+            amountAndDate
+        }
+        .padding(.vertical, 4)
+        .contentShape(Rectangle())
+    }
 
-            VStack(alignment: .trailing, spacing: 2) {
-                Text(amountDisplay)
-                    .font(.body)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(amountColor)
+    private var transactionIcon: some View {
+        ZStack {
+            Circle()
+                .fill(iconBackground)
+                .frame(width: 44, height: 44)
 
-                Text(transaction.displayPostedDate)
-                    .font(.caption)
+            Image(systemName: iconName)
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundStyle(iconForeground)
+        }
+    }
+
+    private var transactionLabels: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(transaction.displayMerchantName)
+                .font(.body)
+                .fontWeight(.semibold)
+                .foregroundStyle(.primary)
+
+            if let desc = transaction.description, !desc.isEmpty {
+                Text(desc)
+                    .font(.subheadline)
                     .foregroundStyle(.secondary)
             }
         }
-        .padding(.vertical, 4)
-        .contentShape(Rectangle()) // whole row tappable, not just the text
     }
 
-    // MARK: - Helpers
+    private var amountAndDate: some View {
+        VStack(alignment: .trailing, spacing: 2) {
+            Text(amountDisplay)
+                .font(.body)
+                .fontWeight(.semibold)
+                .foregroundStyle(amountColor)
 
-    private var isCredit: Bool { transaction.type == .credit }
+            Text(transaction.displayPostedDate)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private var isCredit: Bool { transaction.type.isCredit }
 
     private var iconName: String {
         isCredit ? "arrow.down.circle.fill" : "arrow.up.circle.fill"
     }
 
     private var iconBackground: Color {
-        // Soft muted green tint for credits, soft neutral grey tint for debits
         isCredit ? Color.transactionGreen.opacity(0.12) : Color(.systemGray6)
     }
 
@@ -70,7 +76,6 @@ struct TransactionRowView: View {
     }
 
     private var amountColor: Color {
-        // Green stands out for income; standard primary color handles standard expenses
         isCredit ? .transactionGreen : .primary
     }
 

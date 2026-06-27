@@ -10,23 +10,32 @@ import Testing
 
 @Suite("TransactionDetailViewModel Tests")
 struct TransactionDetailViewModelTests {
-
+    
     @MainActor
-    @Test("Status icon is success-icon regardless of transaction type")
-    func statusIconIsAlwaysSuccess() {
-        let credit = TransactionDetailViewModel(transaction: .makeMock(type: .credit))
-        let debit  = TransactionDetailViewModel(transaction: .makeMock(type: .debit))
-
-        // hardcoded until the API adds a status field — both should return the same icon
-        #expect(credit.statusIcon == "success-icon")
-        #expect(debit.statusIcon  == "success-icon")
+    @Test("Credit transaction uses the success icon")
+    func creditUsesSuccessIcon() {
+        let vm = TransactionDetailViewModel(transaction: .makeMock(type: .credit))
+        #expect(vm.statusIcon == "success-icon")
     }
 
     @MainActor
-    @Test("Tooltip starts collapsed and toggles correctly")
-    func tooltipToggle() {
+    @Test("Debit transaction uses the red checkmark icon")
+    func debitUsesRedCheckmarkIcon() {
+        let vm = TransactionDetailViewModel(transaction: .makeMock(type: .debit))
+        #expect(vm.statusIcon == "red_checkmark_icon")
+    }
+
+    @MainActor
+    @Test("Tooltip starts collapsed")
+    func tooltipStartsCollapsed() {
         let vm = TransactionDetailViewModel(transaction: .makeMock())
         #expect(vm.isTooltipExpanded == false)
+    }
+
+    @MainActor
+    @Test("toggleTooltip expands then collapses on successive calls")
+    func tooltipTogglesCycle() {
+        let vm = TransactionDetailViewModel(transaction: .makeMock())
 
         vm.toggleTooltip()
         #expect(vm.isTooltipExpanded == true)
@@ -36,10 +45,9 @@ struct TransactionDetailViewModelTests {
     }
 
     @MainActor
-    @Test("ViewModel holds the same transaction it was initialised with")
+    @Test("ViewModel exposes the transaction it was initialised with")
     func viewModelStoresTransaction() {
-        let transaction = Transaction.makeMock(merchantName: "Test Store")
-        let vm = TransactionDetailViewModel(transaction: transaction)
+        let vm = TransactionDetailViewModel(transaction: .makeMock(merchantName: "Test Store"))
         #expect(vm.transaction.displayMerchantName == "Test Store")
     }
 }
