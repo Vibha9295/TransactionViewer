@@ -9,34 +9,30 @@ import SwiftUI
 
 struct TransactionDetailView: View {
     
-    let transaction: Transaction
-    
+    // Injected so the view is previewable and testable without live data.
     @State private var viewModel: TransactionDetailViewModel
     @Environment(\.dismiss) private var dismiss
-    
-    init(transaction: Transaction) {
-        self.transaction = transaction
-        _viewModel = State(initialValue: TransactionDetailViewModel(transaction: transaction))
+
+    init(viewModel: TransactionDetailViewModel) {
+        _viewModel = State(initialValue: viewModel)
     }
-    
+
     var body: some View {
         VStack(spacing: 0) {
             Color(uiColor: .systemBackground)
                 .frame(height: 0)
                 .ignoresSafeArea(edges: .top)
-            
+
             Divider()
                 .shadow(color: .black.opacity(0.12), radius: 2, x: 0, y: 1)
-            
+
             ZStack {
                 Color(uiColor: .systemGroupedBackground)
                     .ignoresSafeArea(edges: .bottom)
-                
+
                 VStack(spacing: 0) {
                     Spacer().frame(height: 24)
-                    
                     detailCard
-                    
                     Spacer().frame(height: 20)
                 }
             }
@@ -46,17 +42,17 @@ struct TransactionDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
     }
-    
-    // MARK: - Card
-    
+
+    // MARK: Card
+
     private var detailCard: some View {
         VStack(spacing: 0) {
-            // status icon + transaction type label
             VStack(spacing: 14) {
                 Image(viewModel.statusIcon)
-                    .frame(width: 32, height: 32)
-                
-                Text(transaction.type.displayTitle)
+                    .resizable()
+                    .frame(width: 44, height: 44)
+
+                Text(viewModel.transaction.type.displayTitle)
                     .font(.title2)
                     .fontWeight(.regular)
                     .foregroundStyle(.primary)
@@ -64,31 +60,31 @@ struct TransactionDetailView: View {
             .frame(maxWidth: .infinity)
             .padding(.top, 32)
             .padding(.bottom, 28)
-            
+
             DetailRowView(
                 label: "detail.from".localized,
-                value: transaction.displayFromAccount,
-                suffix: transaction.displayCardSuffix.isEmpty ? nil : transaction.displayCardSuffix
+                value: viewModel.transaction.displayFromAccount,
+                suffix: viewModel.transaction.displayCardSuffix.isEmpty ? nil : viewModel.transaction.displayCardSuffix
             )
             .padding(.horizontal, 20)
             .padding(.vertical, 16)
-            
+
             Divider().padding(.horizontal, 20)
-            
+
             DetailRowView(
                 label: "detail.amount".localized,
-                value: transaction.amount.formatted,
+                value: viewModel.transaction.amount.formatted,
                 valueFont: .title3
             )
             .padding(.horizontal, 20)
             .padding(.vertical, 16)
-            
+
             TooltipView(isExpanded: $viewModel.isTooltipExpanded)
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
-            
+
             Spacer(minLength: 20)
-            
+
             closeButton
                 .padding(.horizontal, 16)
                 .padding(.bottom, 24)
@@ -100,7 +96,7 @@ struct TransactionDetailView: View {
         .padding(.horizontal, 12)
         .accessibilityElement(children: .contain)
     }
-    
+
     private var closeButton: some View {
         Button {
             dismiss()

@@ -11,7 +11,6 @@ import Foundation
 
 struct TransactionList: Decodable {
     var transactions: [Transaction]
-    // CodingKeys not needed — synthesized mapping matches JSON keys exactly
 }
 
 // MARK: - Transaction
@@ -21,7 +20,7 @@ struct Transaction: Identifiable, Decodable, Hashable, Sendable {
     var id: String { key }
 
     let key: String
-    let type: TransactionType
+    nonisolated let type: TransactionType
     let merchantName: String?
     let description: String?
     let amount: Amount
@@ -44,8 +43,8 @@ struct Transaction: Identifiable, Decodable, Hashable, Sendable {
 // MARK: - UI Display Helpers
 
 extension Transaction {
-    
-    // backend sometimes sends whitespace-only strings, treat those as nil
+
+    // Backend sometimes sends whitespace-only strings; treat those as nil.
     nonisolated var displayMerchantName: String {
         let trimmed = merchantName?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         return trimmed.isEmpty ? "Unknown merchant" : trimmed
@@ -57,7 +56,7 @@ extension Transaction {
     }
 
     nonisolated var displayPostedDate: String {
-        postedDate ?? "—" // dash looks cleaner than "N/A" or leaving it blank
+        postedDate ?? "—"
     }
 
     nonisolated var displayCardSuffix: String {
@@ -72,12 +71,13 @@ enum TransactionType: String, Decodable, Hashable, Sendable {
     case credit = "CREDIT"
     case debit  = "DEBIT"
     
-    var isCredit: Bool { self == .credit }
+    nonisolated var isCredit: Bool { self == .credit }
 
     var displayTitle: String {
         isCredit ? "detail.credit".localized : "detail.debit".localized
     }
-    // default RawRepresentable init silently returns nil on unknown values, which swallows bugs. throwing here makes bad payloads visible early.
+    // The default RawRepresentable init silently returns nil on unknown values,
+    // which swallows bugs. Throwing here makes bad payloads visible early.
     init(from decoder: any Decoder) throws {
         let container = try decoder.singleValueContainer()
         let raw = try container.decode(String.self)

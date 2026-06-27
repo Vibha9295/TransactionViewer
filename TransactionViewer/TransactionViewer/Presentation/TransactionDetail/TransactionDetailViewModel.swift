@@ -10,7 +10,7 @@ import SwiftUI
 @MainActor
 @Observable
 final class TransactionDetailViewModel {
-
+    
     let transaction: Transaction
     var isTooltipExpanded: Bool = false
 
@@ -18,9 +18,9 @@ final class TransactionDetailViewModel {
         self.transaction = transaction
     }
 
-    // always success for now — will need to handle pending/failed states
-    // once the API adds a transaction status field
-    var statusIcon: String { "success-icon" }
+    var statusIcon: String {
+        transaction.type.isCredit ? "success-icon" : "red_checkmark_icon"
+    }
 
     func toggleTooltip() {
         withAnimation(.easeInOut(duration: 0.25)) {

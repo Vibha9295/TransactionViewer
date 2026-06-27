@@ -14,21 +14,24 @@ struct TransactionViewerApp: App {
             TransactionListView(viewModel: makeViewModel())
         }
     }
-    
+
     private func makeViewModel() -> TransactionListViewModel {
-#if DEBUG
+        #if DEBUG
         if CommandLine.arguments.contains("-UITestMode") {
             return TransactionListViewModel(service: MockTransactionService())
         }
-#endif
+        #endif
         return TransactionListViewModel(service: TransactionService())
     }
 }
 
+// MARK: - Mock (Debug / Tests only)
+
 #if DEBUG
-// only used by UI tests and Xcode previews
-final class MockTransactionService: TransactionServiceProtocol, Sendable {
-    
+// Only used by UI tests and Xcode previews. @unchecked is safe here because
+// this type is only ever written during test setup, never concurrently.
+final class MockTransactionService: TransactionServiceProtocol, @unchecked Sendable {
+
     func fetchTransactions() async throws -> [Transaction] {
         [
             Transaction(

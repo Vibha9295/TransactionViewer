@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct TransactionListView: View {
-    @State private var viewModel = TransactionListViewModel()
-    
+    @State private var viewModel: TransactionListViewModel
+
     init(viewModel: TransactionListViewModel = TransactionListViewModel()) {
-            _viewModel = State(initialValue: viewModel)
-        }
-    
+        _viewModel = State(initialValue: viewModel)
+    }
+
     var body: some View {
         NavigationStack {
             Group {
@@ -29,7 +29,9 @@ struct TransactionListView: View {
             .navigationTitle("transactions.title".localized)
             .navigationBarTitleDisplayMode(.large)
             .navigationDestination(for: Transaction.self) { transaction in
-                TransactionDetailView(transaction: transaction)
+                TransactionDetailView(
+                    viewModel: TransactionDetailViewModel(transaction: transaction)
+                )
             }
         }
         .task {
@@ -37,7 +39,7 @@ struct TransactionListView: View {
         }
     }
 
-    // MARK: - Sub-views
+    // MARK: Sub-views
 
     private var loadingView: some View {
         VStack(spacing: 12) {

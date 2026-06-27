@@ -10,7 +10,7 @@ import SwiftUI
 @MainActor
 @Observable
 final class TransactionListViewModel {
-
+    
     enum State: Sendable {
         case idle
         case loading
@@ -26,7 +26,7 @@ final class TransactionListViewModel {
     }
 
     func loadTransactions() async {
-        // skip the spinner if we already have data — avoids the flash on pull-to-refresh
+        // Don't flash a spinner over existing rows during pull-to-refresh.
         if case .loaded = state { } else {
             state = .loading
         }

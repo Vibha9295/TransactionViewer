@@ -11,50 +11,63 @@ import Foundation
 
 @Suite("Transaction Model Tests")
 struct TransactionTests {
-
-    @Test("Merchant name falls back to placeholder when nil or blank")
+    
+    @Test("Merchant name falls back to placeholder when nil or whitespace-only")
     func merchantNameFallback() {
-        // all three of these should hit the same fallback path
-        #expect(Transaction.makeMock(merchantName: nil).displayMerchantName  == "Unknown merchant")
-        #expect(Transaction.makeMock(merchantName: "").displayMerchantName   == "Unknown merchant")
-        #expect(Transaction.makeMock(merchantName: "   ").displayMerchantName == "Unknown merchant")
+        #expect(Transaction.makeMock(merchantName: nil).displayMerchantName    == "Unknown merchant")
+        #expect(Transaction.makeMock(merchantName: "").displayMerchantName     == "Unknown merchant")
+        #expect(Transaction.makeMock(merchantName: "   ").displayMerchantName  == "Unknown merchant")
         #expect(Transaction.makeMock(merchantName: "Store").displayMerchantName == "Store")
     }
 
-    @Test("Card suffix shows last four digits, empty string when card is short or absent")
+    @Test("Card suffix shows last four digits; empty string when card is short or absent")
     func cardSuffixFormatting() {
         #expect(Transaction.makeMock(fromCardNumber: "1234567890123456").displayCardSuffix == "(3456)")
-        #expect(Transaction.makeMock(fromCardNumber: "123").displayCardSuffix == "")
-        #expect(Transaction.makeMock(fromCardNumber: nil).displayCardSuffix  == "")
+        #expect(Transaction.makeMock(fromCardNumber: "123").displayCardSuffix             == "")
+        #expect(Transaction.makeMock(fromCardNumber: nil).displayCardSuffix               == "")
     }
-    
+
     @Test("Posted date falls back to em dash when nil")
     func postedDateFallback() {
-        #expect(Transaction.makeMock().displayPostedDate == "—")
+        #expect(Transaction.makeMock().displayPostedDate                         == "—")
         #expect(Transaction.makeMock(postedDate: "2026-06-25").displayPostedDate == "2026-06-25")
     }
 
-    @Test("From account falls back to placeholder when nil or blank")
+    @Test("From account falls back to placeholder when nil or whitespace-only")
     func fromAccountFallback() {
-        #expect(Transaction.makeMock(fromAccount: nil).displayFromAccount == "Unknown account")
-        #expect(Transaction.makeMock(fromAccount: "  ").displayFromAccount == "Unknown account")
+        #expect(Transaction.makeMock(fromAccount: nil).displayFromAccount   == "Unknown account")
+        #expect(Transaction.makeMock(fromAccount: "  ").displayFromAccount  == "Unknown account")
         #expect(Transaction.makeMock(fromAccount: "Chequing").displayFromAccount == "Chequing")
     }
 
-    @Test("Amount formats correctly with currency code")
+    @Test("Amount formats to a string that contains the numeric value")
     func amountFormatted() {
         let amount = Amount(value: 42.50, currency: "CAD")
-        // just check it contains the value — exact format is locale-dependent
+        // Exact format is locale-dependent; just check the number is present.
         #expect(amount.formatted.contains("42.50") || amount.formatted.contains("42,50"))
     }
 
-    @Test("Credit and debit types decode from raw strings")
+    @Test("CREDIT and DEBIT raw strings decode to the correct enum cases")
     func transactionTypeDecoding() throws {
         let creditJSON = #""CREDIT""#.data(using: .utf8)!
         let debitJSON  = #""DEBIT""#.data(using: .utf8)!
 
         #expect(try JSONDecoder().decode(TransactionType.self, from: creditJSON) == .credit)
         #expect(try JSONDecoder().decode(TransactionType.self, from: debitJSON)  == .debit)
+    }
+
+    @Test("Unknown transaction_type value throws DecodingError rather than silently returning nil")
+    func unknownTransactionTypeThrows() {
+        let json = #""UNKNOWN""#.data(using: .utf8)!
+        #expect(throws: DecodingError.self) {
+            try JSONDecoder().decode(TransactionType.self, from: json)
+        }
+    }
+
+    @Test("isCredit returns true only for credit transactions")
+    func isCreditFlag() {
+        #expect(Transaction.makeMock(type: .credit).type.isCredit == true)
+        #expect(Transaction.makeMock(type: .debit).type.isCredit  == false)
     }
 }
 

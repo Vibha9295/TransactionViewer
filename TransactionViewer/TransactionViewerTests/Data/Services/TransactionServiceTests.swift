@@ -11,15 +11,14 @@ import Foundation
 
 @Suite("Transaction Service Tests")
 struct TransactionServiceTests {
-
+    
     @Test("Bundle JSON decodes into a non-empty transaction list")
     func serviceDecodesValidBundleJSON() async throws {
-        let service = TransactionService()
-        let transactions = try await service.fetchTransactions()
+        let transactions = try await TransactionService().fetchTransactions()
         #expect(!transactions.isEmpty)
     }
 
-    @Test("Unknown transaction_type value throws a DecodingError")
+    @Test("Unknown transaction_type value in bundle JSON throws DecodingError")
     func unknownTransactionTypeThrows() throws {
         let json = """
         {
@@ -36,14 +35,14 @@ struct TransactionServiceTests {
         }
     }
 
-    @Test("Missing bundle file produces a fileNotFound error")
-    func missingFileProducesCorrectError() async {
+    @Test("fileNotFound error description mentions the expected filename")
+    func fileNotFoundDescription() {
         let error = TransactionServiceError.fileNotFound
         #expect(error.errorDescription?.contains("transaction-list.json") == true)
     }
-    
-    @Test("decodingFailed error description includes the underlying error")
-    func decodingFailedErrorDescription() {
+
+    @Test("decodingFailed error description includes the underlying error message")
+    func decodingFailedDescription() {
         let underlying = NSError(domain: "test", code: 0, userInfo: [NSLocalizedDescriptionKey: "bad data"])
         let error = TransactionServiceError.decodingFailed(underlying)
         #expect(error.errorDescription?.contains("bad data") == true)
