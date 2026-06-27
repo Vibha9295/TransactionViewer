@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 932" width="430" height="932">
+
+  <!-- Full bleed background -->
+  <rect width="430" height="932" fill="#111827"/>
+
+  <!-- Soft radial halo behind the icon (two concentric tinted circles) -->
+  <circle cx="215" cy="390" r="240" fill="#1A2540" opacity="0.50"/>
+  <circle cx="215" cy="390" r="140" fill="#1A2540" opacity="0.55"/>
+
+  <!-- ── App icon (scaled-down replica of AppIcon.svg, centred) ──
+       Icon artboard: 160×160 pt, top-left at (135, 290)                    -->
+  <g transform="translate(135,290)">
+
+    <!-- Rounded square background -->
+    <rect width="160" height="160" rx="36" ry="36" fill="#1A2540"/>
+
+    <!-- Inner panel -->
+    <rect x="80" y="75" width="125" height="125" fill="#212E52" opacity="0.55"/>
+
+    <!-- Card body -->
+    <rect x="17" y="31" width="117" height="81" rx="7" ry="7" fill="#2A3F7A"/>
+    <rect x="17" y="31" width="117" height="81" rx="7" ry="7"
+          fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="0.5"/>
+
+    <!-- Stripe -->
+    <rect x="17" y="52" width="117" height="14" fill="rgba(0,0,0,0.28)"/>
+
+    <!-- Chip -->
+    <rect x="25" y="70" width="25" height="19" rx="3" ry="3" fill="#E8A93A"/>
+    <rect x="25" y="75" width="25" height="1.5" rx="1" fill="rgba(0,0,0,0.18)"/>
+    <rect x="25" y="79" width="25" height="1.5" rx="1" fill="rgba(0,0,0,0.12)"/>
+    <rect x="25" y="83" width="25" height="1.5" rx="1" fill="rgba(0,0,0,0.08)"/>
+    <rect x="36"  y="70" width="1.5" height="19" rx="1" fill="rgba(0,0,0,0.12)"/>
+    <rect x="40"  y="70" width="1.5" height="19" rx="1" fill="rgba(0,0,0,0.08)"/>
+
+    <!-- Card number mask -->
+    <rect x="25" y="95" width="42" height="4" rx="2" ry="2" fill="rgba(255,255,255,0.22)"/>
+    <rect x="73" y="95" width="20" height="4" rx="2" ry="2" fill="rgba(255,255,255,0.14)"/>
+
+    <!-- Network circles -->
+    <circle cx="120" cy="39" r="8.5" fill="#E05C3A" opacity="0.88"/>
+    <circle cx="131" cy="39" r="8.5" fill="#F0A500" opacity="0.88"/>
+
+    <!-- Transfer badge -->
+    <circle cx="115" cy="103" r="23" fill="#E84336"/>
+    <line x1="115" y1="93" x2="115" y2="113"
+          stroke="white" stroke-width="8" stroke-linecap="round"/>
+    <polyline points="104,100 115,89 126,100"
+              fill="none" stroke="white" stroke-width="8"
+              stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="104,106 115,117 126,106"
+              fill="none" stroke="white" stroke-width="8"
+              stroke-linecap="round" stroke-linejoin="round"/>
+
+  </g>
+
+  <!-- App name -->
+  <text x="215" y="496"
+        text-anchor="middle"
+        font-family="-apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif"
+        font-size="28"
+        font-weight="600"
+        fill="#FFFFFF"
+        letter-spacing="0.3">TransactionViewer</text>
+
+  <!-- Tagline -->
+  <text x="215" y="530"
+        text-anchor="middle"
+        font-family="-apple-system, 'SF Pro Text', 'Helvetica Neue', sans-serif"
+        font-size="16"
+        font-weight="400"
+        fill="#6B7280"
+        letter-spacing="0.4">Your finances, clearly</text>
+
+</svg>

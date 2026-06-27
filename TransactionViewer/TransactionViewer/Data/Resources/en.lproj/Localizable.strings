@@ -1,0 +1,22 @@
+// MARK: - Transaction List
+"transactions.title" = "Transactions";
+"transactions.loading" = "Loading transactions…";
+"transactions.empty.title" = "No Transactions";
+"transactions.empty.description" = "Pull to refresh or check back later.";
+"transactions.error.title" = "Something went wrong";
+"transactions.error.retry" = "Try again";
+// MARK: - Transaction Detail
+"transaction.detail.title" = "Transaction Details";
+"detail.from" = "From";
+"detail.amount" = "Amount";
+"detail.close" = "Close";
+"detail.credit" = "Credit transaction";
+"detail.debit" = "Debit transaction";
+"detail.unknown_merchant" = "Unknown merchant";
+"detail.unknown_account" = "Unknown account";
+
+// MARK: - Tooltip
+"tooltip.primary" = "Transactions are processed Monday to Friday (excluding holidays).";
+"tooltip.expanded" = "Transactions made before 8:30 pm ET Monday to Friday (excluding holidays) will show up in your account the same day.";
+"tooltip.show_more" = "Show more";
+"tooltip.show_less" = "Show less";

@@ -1,0 +1,22 @@
+// MARK: - Transaction List
+"transactions.title" = "Transactions";
+"transactions.loading" = "Chargement des transactions…";
+"transactions.empty.title" = "Aucune transaction";
+"transactions.empty.description" = "Tirez pour actualiser ou revenez plus tard.";
+"transactions.error.title" = "Une erreur s'est produite";
+"transactions.error.retry" = "Réessayer";
+// MARK: - Transaction Detail
+"transaction.detail.title" = "Détails de la transaction";
+"detail.from" = "De";
+"detail.amount" = "Montant";
+"detail.close" = "Fermer";
+"detail.credit" = "Transaction crédit";
+"detail.debit" = "Transaction débit";
+"detail.unknown_merchant" = "Marchand inconnu";
+"detail.unknown_account" = "Compte inconnu";
+
+// MARK: - Tooltip
+"tooltip.primary" = "Les transactions sont traitées du lundi au vendredi (jours fériés exclus).";
+"tooltip.expanded" = "Les transactions effectuées avant 20 h 30 HE du lundi au vendredi (jours fériés exclus) apparaîtront dans votre compte le jour même.";
+"tooltip.show_more" = "Afficher plus";
+"tooltip.show_less" = "Afficher moins";
