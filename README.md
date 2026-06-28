@@ -6,10 +6,10 @@ A lightweight iOS app that displays a list of bank transactions and lets users d
 
 ## Screenshots
 
-| Transaction List | Transaction Detail | Tooltip expanded |
-|---|---|---|
-| `transactions_list` | `transaction_detail_screen` | `tooltip_expanded_text` |
-|<image width="200" src="https://github.com/user-attachments/assets/2cfff269-8717-409f-9fa3-d6d9af32aae7"/> <image width="200" src="https://github.com/user-attachments/assets/93efbe2c-c04b-490a-b11b-c2e597fe5f59"/>|<image width="200" src="https://github.com/user-attachments/assets/96377e88-d43c-4888-860e-51664c482109"/> <image width="200" src="https://github.com/user-attachments/assets/6c1195b3-81a5-4d2c-ad13-93bdd9e4309f"/>|<image width="200" src="https://github.com/user-attachments/assets/f49d0f36-74e5-4073-b482-184ff23ad190"/> <image width="200" src="https://github.com/user-attachments/assets/26931a14-4509-4e82-8a99-1da6f7973418"/>|
+| Launch/App Icon | Transaction List | Transaction Detail | Tooltip expanded | Error/Loading Screen |
+|---|---|---|---|---|
+| `AppLaunch/AppIcon` | `transactions_list` | `transaction_detail_screen` | `tooltip_expanded_text` | `Error/Loading` |
+|<image width="200" src="https://github.com/user-attachments/assets/342b1d62-f53d-4f39-9b85-56253d13d82b"/> <image width="200" src="https://github.com/user-attachments/assets/d7acc20e-9407-4453-b8f3-7a9503f6bf27"/>|<image width="200" src="https://github.com/user-attachments/assets/2cfff269-8717-409f-9fa3-d6d9af32aae7"/> <image width="200" src="https://github.com/user-attachments/assets/93efbe2c-c04b-490a-b11b-c2e597fe5f59"/>|<image width="200" src="https://github.com/user-attachments/assets/96377e88-d43c-4888-860e-51664c482109"/> <image width="200" src="https://github.com/user-attachments/assets/6c1195b3-81a5-4d2c-ad13-93bdd9e4309f"/>|<image width="200" src="https://github.com/user-attachments/assets/f49d0f36-74e5-4073-b482-184ff23ad190"/> <image width="200" src="https://github.com/user-attachments/assets/26931a14-4509-4e82-8a99-1da6f7973418"/>|<image width="200" src="https://github.com/user-attachments/assets/92b33862-b630-4740-97cc-df117400dca4"/> <image width="200" src="https://github.com/user-attachments/assets/897c5135-1dc6-4bb4-8929-c95b35ddd4be"/>|
 
 ---
 
