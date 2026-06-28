@@ -8,6 +8,6 @@
 import SwiftUI
 
 extension Color {
-    // TODO: replace with design tokens once we have a proper theme set up
-    @MainActor static let transactionGreen = Color.green
+    static let transactionGreen = Color.green
+    static let destructiveRed = Color(red: 0.88, green: 0.27, blue: 0.22)
 }

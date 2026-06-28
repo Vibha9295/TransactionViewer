@@ -90,6 +90,7 @@ struct TransactionListView: View {
                 Task { await viewModel.loadTransactions() }
             }
             .buttonStyle(.bordered)
+            .accessibilityIdentifier("transactions_retry_button")
         }
     }
 }

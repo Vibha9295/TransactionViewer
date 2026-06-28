@@ -23,22 +23,22 @@ final class TransactionDetailViewUITests: XCTestCase {
     }
 
     func testDetailScreenShowsAndTooltipExpandsAndCollapses() throws {
-        let list = app.descendants(matching: .any)["transactions_list"]
+        let list = app.collectionViews["transactions_list"]
         XCTAssertTrue(list.waitForExistence(timeout: 5), "Transaction list did not appear.")
 
-        let firstRow = list.cells.firstMatch.exists ? list.cells.firstMatch : list.buttons.firstMatch
-        XCTAssertTrue(firstRow.exists, "No tappable row found in the transaction list.")
-        firstRow.tap()
+        let firstCell = list.cells.firstMatch
+        XCTAssertTrue(firstCell.exists, "No tappable row found in the transaction list.")
+        firstCell.tap()
 
-        let detailScreen = app.descendants(matching: .any)["transaction_detail_screen"]
+        let detailScreen = app.otherElements["transaction_detail_screen"]
         XCTAssertTrue(detailScreen.waitForExistence(timeout: 3), "Detail screen did not appear after tapping a row.")
 
         // Expand the tooltip.
-        let primaryTooltip = app.descendants(matching: .any)["tooltip_primary_text"]
+        let primaryTooltip = app.buttons["tooltip_primary_text"]
         XCTAssertTrue(primaryTooltip.waitForExistence(timeout: 5), "Primary tooltip element not found.")
         primaryTooltip.tap()
 
-        let expandedTooltip = app.descendants(matching: .any)["tooltip_expanded_text"]
+        let expandedTooltip = app.buttons["tooltip_expanded_text"]
         XCTAssertTrue(expandedTooltip.waitForExistence(timeout: 4), "Expanded tooltip did not animate in.")
 
         // Collapse the tooltip and wait for the animation to finish.
@@ -47,8 +47,10 @@ final class TransactionDetailViewUITests: XCTestCase {
             predicate: NSPredicate(format: "exists == false"),
             object: expandedTooltip
         )
-        XCTAssertEqual(XCTWaiter().wait(for: [collapsed], timeout: 2), .completed,
-                       "Expanded tooltip did not disappear after collapsing.")
+        XCTAssertEqual(
+            XCTWaiter().wait(for: [collapsed], timeout: 2), .completed,
+            "Expanded tooltip did not disappear after collapsing."
+        )
 
         // Dismiss the detail card and confirm we return to the list.
         let closeButton = app.buttons["detail_close_button"]

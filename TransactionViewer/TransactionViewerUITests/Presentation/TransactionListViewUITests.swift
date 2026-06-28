@@ -33,9 +33,10 @@ final class TransactionListViewUITests: XCTestCase {
         XCTAssertTrue(list.waitForExistence(timeout: 3))
         list.cells.element(boundBy: 0).tap()
 
+        let detailScreen = app.otherElements["transaction_detail_screen"]
         XCTAssertTrue(
-            app.navigationBars["Transaction Details"].waitForExistence(timeout: 3),
-            "Detail screen navigation bar did not appear."
+            detailScreen.waitForExistence(timeout: 3),
+            "Detail screen did not appear after tapping a row."
         )
     }
 
@@ -44,5 +45,19 @@ final class TransactionListViewUITests: XCTestCase {
         XCTAssertTrue(list.waitForExistence(timeout: 3))
         list.swipeUp()
         XCTAssertTrue(list.exists, "List disappeared after swipe.")
+    }
+    
+    /// Verifies the error state and retry flow.
+    /// Requires a separate launch argument that makes MockTransactionService throw.
+    func testErrorStateShowsRetryButton() throws {
+        app.terminate()
+        app.launchArguments = ["-UITestMode", "-UITestErrorMode"]
+        app.launch()
+        let retryButton = app.buttons["transactions_retry_button"]
+        XCTAssertTrue(retryButton.waitForExistence(timeout: 5), "Retry button did not appear in error state.")
+
+        // Confirm the button is hittable (not disabled).
+        XCTAssertTrue(retryButton.isHittable, "Retry button exists but is not hittable.")
+        retryButton.tap()
     }
 }

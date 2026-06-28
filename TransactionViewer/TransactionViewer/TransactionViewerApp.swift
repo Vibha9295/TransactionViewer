@@ -17,8 +17,12 @@ struct TransactionViewerApp: App {
 
     private func makeViewModel() -> TransactionListViewModel {
         #if DEBUG
-        if CommandLine.arguments.contains("-UITestMode") {
-            return TransactionListViewModel(service: MockTransactionService())
+        let args = CommandLine.arguments
+        if args.contains("-UITestMode") {
+            let service = MockTransactionService(
+                shouldFail: args.contains("-UITestErrorMode")
+            )
+            return TransactionListViewModel(service: service)
         }
         #endif
         return TransactionListViewModel(service: TransactionService())
@@ -28,12 +32,22 @@ struct TransactionViewerApp: App {
 // MARK: - Mock (Debug / Tests only)
 
 #if DEBUG
-// Only used by UI tests and Xcode previews. @unchecked is safe here because
-// this type is only ever written during test setup, never concurrently.
+/// Only used by UI tests and Xcode previews.
+/// @unchecked is safe here because this type is only written during test setup,
+/// never from concurrent contexts.
 final class MockTransactionService: TransactionServiceProtocol, @unchecked Sendable {
+    
+    private let shouldFail: Bool
+
+    init(shouldFail: Bool = false) {
+        self.shouldFail = shouldFail
+    }
 
     func fetchTransactions() async throws -> [Transaction] {
-        [
+        if shouldFail {
+            throw TransactionServiceError.fileNotFound
+        }
+        return [
             Transaction(
                 key: "mock_001",
                 type: .debit,
