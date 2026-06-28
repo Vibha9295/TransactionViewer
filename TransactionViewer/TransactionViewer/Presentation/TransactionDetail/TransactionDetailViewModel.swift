@@ -21,10 +21,4 @@ final class TransactionDetailViewModel {
     var statusIcon: String {
         transaction.type.isCredit ? "success-icon" : "red_checkmark_icon"
     }
-
-    func toggleTooltip() {
-        withAnimation(.easeInOut(duration: 0.25)) {
-            isTooltipExpanded.toggle()
-        }
-    }
 }

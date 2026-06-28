@@ -9,7 +9,6 @@ import SwiftUI
 
 struct TransactionDetailView: View {
     
-    // Injected so the view is previewable and testable without live data.
     @State private var viewModel: TransactionDetailViewModel
     @Environment(\.dismiss) private var dismiss
 
@@ -109,7 +108,7 @@ struct TransactionDetailView: View {
                 .frame(height: 52)
                 .background(
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .fill(Color(red: 0.88, green: 0.27, blue: 0.22))
+                        .fill(Color.destructiveRed)
                 )
         }
         .accessibilityIdentifier("detail_close_button")

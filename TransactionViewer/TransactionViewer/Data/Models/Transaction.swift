@@ -44,7 +44,7 @@ struct Transaction: Identifiable, Decodable, Hashable, Sendable {
 
 extension Transaction {
 
-    // Backend sometimes sends whitespace-only strings; treat those as nil.
+    /// Backend sometimes sends whitespace-only strings; treat those as nil.
     nonisolated var displayMerchantName: String {
         let trimmed = merchantName?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         return trimmed.isEmpty ? "Unknown merchant" : trimmed
