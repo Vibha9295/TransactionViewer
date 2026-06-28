@@ -16,13 +16,16 @@ protocol TransactionServiceProtocol: Sendable {
 // MARK: - TransactionService
 
 final class TransactionService: TransactionServiceProtocol, Sendable {
-
-    // 0.5s pause to mimic a real network round-trip in the simulator, remove before prod
+    #if DEBUG
     private let simulatedDelay: UInt64 = 500_000_000
-
+    #else
+    private let simulatedDelay: UInt64 = 0
+    #endif
+    
     func fetchTransactions() async throws -> [Transaction] {
-        try await Task.sleep(nanoseconds: simulatedDelay)
-
+        if simulatedDelay > 0 {
+            try await Task.sleep(nanoseconds: simulatedDelay)
+        }
         guard let url = Bundle.main.url(forResource: "transaction-list", withExtension: "json") else {
             throw TransactionServiceError.fileNotFound
         }

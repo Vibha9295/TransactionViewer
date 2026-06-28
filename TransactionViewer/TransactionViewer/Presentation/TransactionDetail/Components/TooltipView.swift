@@ -36,22 +36,31 @@ struct TooltipView: View {
         }
     }
 
+    // MARK: - Subviews
+
+    /// Single button that both expands and collapses the tooltip,
+    /// replacing the previous split-logic approach.
     private var collapseButton: some View {
         Button {
-            guard !isExpanded else { return }
             withAnimation(.easeInOut(duration: 0.22)) {
-                isExpanded = true
+                isExpanded.toggle()
             }
         } label: {
-            Text("\("tooltip.primary".localized) \(Text(isExpanded ? "" : "tooltip.show_more".localized).foregroundStyle(.blue).fontWeight(.bold))")
-                .font(.subheadline)
-                .fixedSize(horizontal: false, vertical: true)
-                .multilineTextAlignment(.leading)
-                .foregroundStyle(.primary)
+            Text(
+                "\("tooltip.primary".localized) \(Text(isExpanded ? "" : "tooltip.show_more".localized).foregroundStyle(.blue).fontWeight(.bold))"
+            )
+            .font(.subheadline)
+            .fixedSize(horizontal: false, vertical: true)
+            .multilineTextAlignment(.leading)
+            .foregroundStyle(.primary)
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier("tooltip_primary_text")
-        .accessibilityLabel("\("tooltip.primary".localized) \("tooltip.show_more".localized)")
+        .accessibilityLabel(
+            isExpanded
+                ? "tooltip.primary".localized
+                : "\("tooltip.primary".localized) \("tooltip.show_more".localized)"
+        )
     }
 
     private var expandedContent: some View {
@@ -60,11 +69,13 @@ struct TooltipView: View {
                 isExpanded = false
             }
         } label: {
-            Text("\("tooltip.expanded".localized) \(Text("tooltip.show_less".localized).foregroundStyle(.blue).fontWeight(.bold))")
-                .font(.subheadline)
-                .fixedSize(horizontal: false, vertical: true)
-                .multilineTextAlignment(.leading)
-                .foregroundStyle(.primary)
+            Text(
+                "\("tooltip.expanded".localized) \(Text("tooltip.show_less".localized).foregroundStyle(.blue).fontWeight(.bold))"
+            )
+            .font(.subheadline)
+            .fixedSize(horizontal: false, vertical: true)
+            .multilineTextAlignment(.leading)
+            .foregroundStyle(.primary)
         }
         .buttonStyle(.plain)
         .transition(.opacity.combined(with: .move(edge: .top)))

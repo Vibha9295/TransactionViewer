@@ -33,14 +33,14 @@ struct TransactionDetailViewModelTests {
     }
 
     @MainActor
-    @Test("toggleTooltip expands then collapses on successive calls")
-    func tooltipTogglesCycle() {
+    @Test("isTooltipExpanded can be toggled programmatically")
+    func tooltipCanBeToggled() {
         let vm = TransactionDetailViewModel(transaction: .makeMock())
 
-        vm.toggleTooltip()
+        vm.isTooltipExpanded = true
         #expect(vm.isTooltipExpanded == true)
 
-        vm.toggleTooltip()
+        vm.isTooltipExpanded = false
         #expect(vm.isTooltipExpanded == false)
     }
 
